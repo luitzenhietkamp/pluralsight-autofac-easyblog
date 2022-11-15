@@ -11,13 +11,17 @@ namespace EasyBlog.Web.Controllers
     [RoutePrefix("home")]
     public class HomeController : Controller
     {
+        IBlogPostRepository blogPostRepository;
+        public HomeController(IBlogPostRepository blogPostRepository)
+        {
+            this.blogPostRepository = blogPostRepository;
+        }
+
         [Route("index")]
         [Route("~/")]
         public ActionResult Index()
         {
-            IBlogPostRepository blogPostRepository = new BlogPostRepository("easyBlog");
-
-            IEnumerable<BlogPost> blogPosts = blogPostRepository.Get();
+            var blogPosts = blogPostRepository.Get();
 
             return View(blogPosts);
         }

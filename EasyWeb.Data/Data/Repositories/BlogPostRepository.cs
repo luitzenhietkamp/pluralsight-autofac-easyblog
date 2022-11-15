@@ -27,7 +27,7 @@ namespace EasyBlog.Data
 
         public BlogPost GetComplete(int blogPostId)
         {
-            using (EasyBlogDbContext entityContext = new EasyBlogDbContext())
+            using (EasyBlogDbContext entityContext = new EasyBlogDbContext("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=D:\\Code\\Pluralsight\\autofac-aspnet-implementing\\02\\demos\\Starter\\EasyBlog\\EasyBlog.Web\\App_Data\\connStrName.mdf;Integrated Security=True"))
             {
                 return entityContext.BlogPostSet
                     .Include(e => e.Comments)

@@ -15,8 +15,11 @@ namespace EasyBlog.Web.Controllers.API
     [RoutePrefix("api/blog")]
     public class BlogApiController : ApiController
     {
-        public BlogApiController()
+        IComponentLocator componentLocator;
+
+        public BlogApiController(IComponentLocator componentLocator)
         {
+            this.componentLocator = componentLocator;
             _ExtensibilityManager = new ExtensibilityManager();
             _ModuleEvents = HttpContext.Current.Application["ModuleEvents"] as ModuleEvents;
         }
@@ -34,7 +37,7 @@ namespace EasyBlog.Web.Controllers.API
 
             try
             {
-                IBlogPostRepository blogPostRepository = new BlogPostRepository("easyBlog");
+                IBlogPostRepository blogPostRepository = componentLocator.ResolveComponent<IBlogPostRepository>();
 
                 IEnumerable<BlogPost> blogPosts = blogPostRepository.Get();
 
@@ -56,7 +59,7 @@ namespace EasyBlog.Web.Controllers.API
 
             try
             {
-                IBlogPostRepository blogPostRepository = new BlogPostRepository("easyBlog");
+				IBlogPostRepository blogPostRepository = componentLocator.ResolveComponent<IBlogPostRepository>();
 
                 BlogPost blogPost = blogPostRepository.GetComplete(blogPostId);
 
@@ -87,7 +90,7 @@ namespace EasyBlog.Web.Controllers.API
                 
                 if (!preArgs.Cancel)
                 {
-                    IBlogPostRepository blogPostRepository = new BlogPostRepository("easyBlog");
+					IBlogPostRepository blogPostRepository = componentLocator.ResolveComponent<IBlogPostRepository>();
 
                     blogPost = blogPostRepository.Add(blogPost);
 
@@ -124,8 +127,8 @@ namespace EasyBlog.Web.Controllers.API
 
                 if (!preArgs.Cancel)
                 {
-                    IBlogCommentRepository blogCommentRepository = new BlogCommentRepository("easyBlog");
-
+                    IBlogCommentRepository blogCommentRepository = componentLocator.ResolveComponent<IBlogCommentRepository>();
+                    
                     blogComment.CommentBody = preArgs.CommentReplacement;
                     blogComment = blogCommentRepository.Add(blogComment);
 
